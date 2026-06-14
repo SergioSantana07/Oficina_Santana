@@ -1,0 +1,16 @@
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'home.html')
+
+def sobre(request):
+    return render(request, 'sobre.html')
+
+def produtos(request):
+    return render(request, 'produtos.html')
+
+def servicos(request):
+    return render(request, 'servicos.html')
+
+def contato(request):
+    return render(request, 'contato.html')
