@@ -6,9 +6,6 @@ def home(request):
 def sobre(request):
     return render(request, 'sobre.html')
 
-def produtos(request):
-    return render(request, 'produtos.html')
-
 def servicos(request):
     return render(request, 'servicos.html')
 

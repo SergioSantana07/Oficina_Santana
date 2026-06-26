@@ -1,10 +1,65 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="container mt-5">
-    <h1>Auto Peças e Mecânica Santana sobre</h1>
-    <p>Site em desenvolvimento.</p>
-</div>
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-white">
+            SOBRE A
+            <span class="santana-red">MECÂNICA SANTANA</span>
+        </h1>
+        <p class="lead text-light">
+            Qualidade, confiança e compromisso com seu veículo.
+        </p>
+    </div>
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-6">
+            <img src="{% static 'img/oficina.png' %}" class="img-fluid rounded" alt="Oficina Santana">
+        </div>
+
+        <div class="col-lg-6">
+            <h3>Nossa História</h3>
+            <p>
+                A Auto Peças e Mecânica Santana atua no segmento
+                automotivo oferecendo manutenção preventiva,
+                corretiva e venda de peças com foco na qualidade,
+                segurança e satisfação dos clientes.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="container pb-5">
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="service-card p-4 text-center">
+                <h3 class="santana-red">Missão</h3>
+                <p>Oferecer serviços automotivos com qualidade, transparência e confiança.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="service-card p-4 text-center">
+                <h3 class="santana-red">Visão</h3>
+                <p>Ser referência em manutenção automotiva na região.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="service-card p-4 text-center">
+                <h3 class="santana-red">Valores</h3>
+                <p>Honestidade, compromisso, qualidade e respeito ao cliente.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
 
 {% endblock %}

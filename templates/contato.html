@@ -1,10 +1,63 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="container mt-5">
-    <h1>Auto Peças e Mecânica Santana contato</h1>
-    <p>Site em desenvolvimento.</p>
-</div>
+<section class="service-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">
+            ENTRE EM <span class="santana-red">CONTATO</span>
+        </h1>
+        <p class="lead mt-3">
+            Entre em contato conosco e solicite seu orçamento.
+        </p>
+    </div>
+</section>
+
+<section class="container py-5">
+
+    <div class="row mb-5">
+
+        <div class="col-md-3 mb-4 d-flex">
+            <div class="contact-card text-center w-100">
+                <i class="bi bi-whatsapp fs-1 santana-red"></i>
+                <h5 class="mt-3">WhatsApp</h5>
+                <p>(61) 99199-9888</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4 d-flex">
+            <div class="contact-card text-center w-100">
+                <i class="bi bi-geo-alt fs-1 santana-red"></i>
+                <h5 class="mt-3">Endereço</h5>
+                <p>Brasília - DF</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4 d-flex">
+            <div class="contact-card text-center w-100">
+                <i class="bi bi-clock fs-1 santana-red"></i>
+                <h5 class="mt-3">Horário</h5>
+                <p>Seg-Sex<br>08:00 às 18:00</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4 d-flex">
+            <div class="contact-card text-center w-100">
+                <i class="bi bi-envelope fs-1 santana-red"></i>
+                <h5 class="mt-3">E-mail</h5>
+                <p>contato@santana.com</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="https://wa.me/5561991999888" class="btn btn-whatsapp btn-lg">
+            <i class="bi bi-whatsapp"></i> Falar pelo WhatsApp
+        </a>
+    </div>
+
+</section>
 
 {% endblock %}

@@ -1,10 +1,213 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="container mt-5">
-    <h1>Auto Peças e Mecânica Santana serviços</h1>
-    <p>Site em desenvolvimento.</p>
-</div>
+<!-- HERO -->
+<section class="service-hero">
+
+    <div class="container text-center">
+
+        <h1 class="display-4 fw-bold">
+            NOSSOS <span class="santana-red">SERVIÇOS</span>
+        </h1>
+
+        <p class="lead mt-3">
+            Cuidamos do seu veículo com qualidade, tecnologia e profissionais especializados.
+        </p>
+
+        <a href="/contato/" class="btn btn-santana btn-lg mt-3">
+            Solicite seu orçamento
+        </a>
+
+    </div>
+
+</section>
+
+<!-- SERVIÇOS -->
+
+<section class="container py-5">
+
+    <div class="row g-4">
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/troca-oleo.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Troca de Óleo</h4>
+
+                    <p>
+                        Lubrificantes premium para aumentar a vida útil do motor e garantir máxima performance.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/freios.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Sistema de Freios</h4>
+
+                    <p>
+                        Revisão completa de discos, pastilhas, fluido e componentes do sistema de frenagem.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/suspensao.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Suspensão</h4>
+
+                    <p>
+                        Troca de amortecedores, bandejas, pivôs e demais componentes da suspensão.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/injecao.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Injeção Eletrônica</h4>
+
+                    <p>
+                        Diagnóstico preciso utilizando equipamentos modernos para detectar falhas rapidamente.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/revisao.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Revisão Preventiva</h4>
+
+                    <p>
+                        Faça a manutenção preventiva e evite problemas maiores no futuro.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/scanner.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Scanner Automotivo</h4>
+
+                    <p>
+                        Leitura completa dos módulos eletrônicos do veículo com tecnologia avançada.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/alinhamento.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Alinhamento</h4>
+
+                    <p>
+                        Mais estabilidade, segurança e economia de pneus para o seu veículo.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Serviço -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="service-page-card">
+
+                <img src="{% static 'img/servicos/ar.jpg' %}" class="img-fluid">
+
+                <div class="p-4">
+
+                    <h4>Ar Condicionado</h4>
+
+                    <p>
+                        Higienização, carga de gás e manutenção completa do sistema de climatização.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 {% endblock %}

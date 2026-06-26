@@ -1,31 +1,20 @@
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 
 <!-- HERO -->
-
 <section class="hero">
-
     <div class="container">
-
         <div class="row align-items-center">
 
             <div class="col-lg-5">
-
                 <h1>
                     AUTO PEÇAS E
-                    <span class="santana-red">
-                        MECÂNICA SANTANA
-                    </span>
+                    <span class="santana-red">MECÂNICA SANTANA</span>
                 </h1>
 
-                <h5 class="mt-3">
-                    Seu veículo em boas mãos!
-                </h5>
+                <h5 class="mt-3">Seu veículo em boas mãos!</h5>
 
                 <p class="mt-3">
                     Mecânica geral, revisão preventiva,
@@ -33,130 +22,74 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 </p>
 
                 <div class="hero-buttons">
-
-                    <a href="/contato/"
-                       class="btn btn-santana me-3">
-
-                        SOLICITAR ORÇAMENTO 
-                        <i class="bi bi-whatsapp"></i>
+                    <a href="/contato/" class="btn btn-santana me-3">
+                        SOLICITAR ORÇAMENTO <i class="bi bi-whatsapp"></i>
                     </a>
-
-                    <a href="/sobre/"
-                       class="btn btn-outline-light">
-
+                    <a href="/sobre/" class="btn btn-outline-light">
                         SAIBA MAIS
                     </a>
-
                 </div>
-
             </div>
 
             <div class="col-lg-7 text-center">
-
-                <img
-                    src="{% static 'img/carro.png' %}"
-                    class="img-fluid hero-car"
-                    alt="Carro"
-                >
-
+                <img src="{% static 'img/carro.png' %}" class="img-fluid hero-car" alt="Carro">
             </div>
 
         </div>
-
     </div>
-
 </section>
 
 <!-- ESTATÍSTICAS -->
-
 <section class="stats">
-
     <div class="container">
-
         <div class="row g-4">
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="stat-card">
-
                     <div class="stat-header">
-
                         <i class="bi bi-people-fill stat-icon"></i>
-
                         <h2>+1000</h2>
-
                     </div>
-
                     <p>Clientes Atendidos</p>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="stat-card">
-
                     <div class="stat-header">
-
                         <i class="bi bi-tools stat-icon"></i>
-
                         <h2>+5000</h2>
-
                     </div>
-
                     <p>Serviços Realizados</p>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="stat-card">
-
                     <div class="stat-header">
-
                         <i class="bi bi-award-fill stat-icon"></i>
-
                         <h2>15</h2>
-
                     </div>
-
                     <p>Anos de Experiência</p>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="stat-card">
-
                     <div class="stat-header">
-
                         <i class="bi bi-shield-check stat-icon"></i>
-
                         <h2>100%</h2>
-
                     </div>
-
                     <p>Qualidade e Confiança</p>
-
                 </div>
-
             </div>
 
         </div>
-
     </div>
-
 </section>
 
 <!-- SERVIÇOS -->
-
 <section class="services">
-
     <div class="container">
 
         <h2 class="text-center mb-5">
@@ -166,95 +99,51 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         <div class="row g-4">
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="service-card">
-
-                    <img src="{% static 'img/oleo.jpg' %}">
-
+                    <img src="{% static 'img/oleo.jpg' %}" alt="Troca de Óleo">
                     <div class="service-content">
-
                         <h5>Troca de Óleo</h5>
-
-                        <p>
-                            Lubrificação completa com produtos de qualidade.
-                        </p>
-
+                        <p>Lubrificação completa com produtos de qualidade.</p>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="service-card">
-
-                    <img src="{% static 'img/freios.jpg' %}">
-
+                    <img src="{% static 'img/freios.jpg' %}" alt="Freios">
                     <div class="service-content">
-
                         <h5>Freios</h5>
-
-                        <p>
-                            Manutenção completa do sistema de frenagem.
-                        </p>
-
+                        <p>Manutenção completa do sistema de frenagem.</p>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="service-card">
-
-                    <img src="{% static 'img/suspensao.jpg' %}">
-
+                    <img src="{% static 'img/suspensao.jpg' %}" alt="Suspensão">
                     <div class="service-content">
-
                         <h5>Suspensão</h5>
-
-                        <p>
-                            Diagnóstico e reparos na suspensão.
-                        </p>
-
+                        <p>Diagnóstico e reparos na suspensão.</p>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-3 col-md-6">
-
                 <div class="service-card">
-
-                    <img src="{% static 'img/injecao.jpg' %}">
-
+                    <img src="{% static 'img/injecao.jpg' %}" alt="Injeção Eletrônica">
                     <div class="service-content">
-
                         <h5>Injeção Eletrônica</h5>
-
-                        <p>
-                            Diagnóstico computadorizado com scanner.
-                        </p>
-
+                        <p>Diagnóstico computadorizado com scanner.</p>
                     </div>
-
                 </div>
-
             </div>
 
         </div>
-
     </div>
-
 </section>
 
-<a href="#"
-   class="whatsapp-float">
-    <i class="bi bi-whatsapp"></i>
-   Faça seu orçamento
+<a href="#" class="whatsapp-float">
+    <i class="bi bi-whatsapp"></i> Faça seu orçamento
 </a>
 
 {% endblock %}
