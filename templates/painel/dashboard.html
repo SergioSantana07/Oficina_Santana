@@ -1,0 +1,119 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_dashboard %}active{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- CARDS -->
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-3 col-md-6">
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="dash-card-info">
+                <p>Clientes</p>
+                <h3>152</h3>
+                <small><i class="bi bi-arrow-up"></i> +12 este mês</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="bi bi-car-front-fill"></i>
+            </div>
+            <div class="dash-card-info">
+                <p>Veículos</p>
+                <h3>238</h3>
+                <small><i class="bi bi-arrow-up"></i> +18 este mês</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+            <div class="dash-card-info">
+                <p>O.S. Abertas</p>
+                <h3>18</h3>
+                <small><i class="bi bi-arrow-up"></i> +5 este mês</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="dash-card">
+            <div class="dash-card-icon">
+                <i class="bi bi-cash-coin"></i>
+            </div>
+            <div class="dash-card-info">
+                <p>Faturamento (Mês)</p>
+                <h3>R$ 42.580</h3>
+                <small><i class="bi bi-arrow-up"></i> +15% este mês</small>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- TABELA ORDENS RECENTES -->
+<div class="dash-table-box">
+    <div class="dash-table-header">
+        <h6>Últimas Ordens de Serviço</h6>
+        <a href="/admin-santana/ordens/" class="btn btn-admin-sm">Ver todas</a>
+    </div>
+    <table class="table admin-table table-borderless">
+        <thead>
+            <tr>
+                <th>#OS</th>
+                <th>Cliente</th>
+                <th>Serviço</th>
+                <th>Status</th>
+                <th>Valor</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#00048</td>
+                <td>João Silva</td>
+                <td>Troca de óleo e filtros</td>
+                <td><span class="badge-status em-andamento">Em andamento</span></td>
+                <td>R$ 320,00</td>
+                <td>22/05/2025</td>
+            </tr>
+            <tr>
+                <td>#00047</td>
+                <td>Maria Oliveira</td>
+                <td>Revisão completa</td>
+                <td><span class="badge-status aberta">Aberta</span></td>
+                <td>R$ 580,00</td>
+                <td>22/05/2025</td>
+            </tr>
+            <tr>
+                <td>#00046</td>
+                <td>Carlos Santos</td>
+                <td>Freios dianteiros</td>
+                <td><span class="badge-status aguardando">Aguardando peças</span></td>
+                <td>R$ 450,00</td>
+                <td>21/05/2025</td>
+            </tr>
+            <tr>
+                <td>#00045</td>
+                <td>Ana Paula</td>
+                <td>Suspensão</td>
+                <td><span class="badge-status finalizada">Finalizada</span></td>
+                <td>R$ 750,00</td>
+                <td>20/05/2025</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

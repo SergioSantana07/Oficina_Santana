@@ -20,10 +20,43 @@ body {
 .nav-link {
     color: white !important;
     font-weight: 500;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff0000;
+    transition: 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
 }
 
 .nav-link:hover {
-    color: #e30613 !important;
+    color: white !important;
+}
+
+.btn-admin {
+    background: transparent;
+    color: white;
+    border: 1px solid #ff0000;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.btn-admin:hover {
+    background: #ff0000;
+    color: white;
 }
 
 /* ============================================================
