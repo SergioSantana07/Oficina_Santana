@@ -1,0 +1,74 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_veiculos %}active{% endblock %}
+{% block page_title %}{{ acao }} Veículo{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="text-white mb-0">{{ acao }} Veículo</h5>
+    <a href="{% url 'veiculos_lista' %}" class="btn btn-admin-sm">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="dash-table-box">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Cliente</label>
+                <select name="cliente" class="form-control admin-input" required>
+                    <option value="">Selecione o cliente</option>
+                    {% for c in clientes %}
+                    <option value="{{ c.id }}" {% if veiculo.cliente.id == c.id %}selected{% endif %}>
+                        {{ c.nome }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Marca</label>
+                <input type="text" name="marca" class="form-control admin-input"
+                       value="{{ veiculo.marca|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Modelo</label>
+                <input type="text" name="modelo" class="form-control admin-input"
+                       value="{{ veiculo.modelo|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Ano</label>
+                <input type="number" name="ano" class="form-control admin-input"
+                       value="{{ veiculo.ano|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Placa</label>
+                <input type="text" name="placa" class="form-control admin-input"
+                       value="{{ veiculo.placa|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Cor</label>
+                <input type="text" name="cor" class="form-control admin-input"
+                       value="{{ veiculo.cor|default:'' }}">
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-admin-login px-4">
+                <i class="bi bi-check-lg"></i> Salvar
+            </button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

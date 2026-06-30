@@ -331,3 +331,60 @@
     background: #ff0000;
     color: white;
 }
+
+/* ============================================================
+   FORMULÁRIOS ADMIN
+============================================================ */
+
+.admin-label {
+    color: #ccc !important;
+    font-size: 0.9rem;
+}
+
+.admin-input {
+    background: #1b1b1b !important;
+    border: 1px solid #333 !important;
+    color: #fff !important;
+    border-radius: 8px;
+}
+
+.admin-input:focus {
+    border-color: #ff0000 !important;
+    box-shadow: none !important;
+}
+
+.admin-input option {
+    background: #1b1b1b;
+    color: #fff;
+}
+
+.admin-search .form-control {
+    background: #1b1b1b !important;
+    border: 1px solid #333 !important;
+    color: #fff !important;
+    border-radius: 8px 0 0 8px;
+}
+
+.admin-search .form-control::placeholder {
+    color: #666 !important;
+}
+
+.admin-search .form-control:focus {
+    border-color: #ff0000;
+    box-shadow: none;
+}
+
+.btn-danger-sm {
+    background: transparent;
+    border: 1px solid #ff4444;
+    color: #ff4444;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.btn-danger-sm:hover {
+    background: #ff4444;
+    color: white;
+}

@@ -71,14 +71,7 @@
             </div>
         </div>
 
-        <!-- PÁGINA -->
         <div class="admin-page">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-
             {% block content %}
             {% endblock %}
         </div>

@@ -1,0 +1,62 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_clientes %}active{% endblock %}
+{% block page_title %}{{ acao }} Cliente{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="text-white mb-0">{{ acao }} Cliente</h5>
+    <a href="{% url 'clientes_lista' %}" class="btn btn-admin-sm">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="dash-table-box">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Nome</label>
+                <input type="text" name="nome" class="form-control admin-input"
+                       value="{{ cliente.nome|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">CPF</label>
+                <input type="text" name="cpf" class="form-control admin-input"
+                       value="{{ cliente.cpf|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Telefone</label>
+                <input type="text" name="telefone" class="form-control admin-input"
+                       value="{{ cliente.telefone|default:'' }}" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">E-mail</label>
+                <input type="email" name="email" class="form-control admin-input"
+                       value="{{ cliente.email|default:'' }}">
+            </div>
+
+            <div class="col-12">
+                <label class="form-label admin-label">Endereço</label>
+                <input type="text" name="endereco" class="form-control admin-input"
+                       value="{{ cliente.endereco|default:'' }}">
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-admin-login px-4">
+                <i class="bi bi-check-lg"></i> Salvar
+            </button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
