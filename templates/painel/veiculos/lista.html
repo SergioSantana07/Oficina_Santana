@@ -23,9 +23,9 @@
 </form>
 
 {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
+{% for message in messages %}
+<div class="alert alert-success">{{ message }}</div>
+{% endfor %}
 {% endif %}
 
 <!-- TABELA -->
@@ -57,8 +57,8 @@
                     <a href="{% url 'veiculo_editar' veiculo.id %}" class="btn btn-admin-sm me-1">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
-                    <a href="{% url 'veiculo_excluir' veiculo.id %}" class="btn btn-danger-sm"
-                       onclick="return confirm('Excluir {{ veiculo.modelo }}?')">
+                    <a href="{% url 'veiculo_excluir' veiculo.id %}" class="btn btn-danger-sm btn-confirm-delete"
+                        data-texto="Excluir veículo {{ veiculo.modelo }}?">
                         <i class="bi bi-trash-fill"></i>
                     </a>
                 </td>

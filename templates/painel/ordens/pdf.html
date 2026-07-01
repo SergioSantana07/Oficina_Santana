@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: A4;
+            margin: 1.8cm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #222;
+            font-size: 11px;
+        }
+
+        .header-table {
+            width: 100%;
+            border-bottom: 3px solid #e30613;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header-table td {
+            vertical-align: middle;
+        }
+
+        .logo-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .logo-title .red {
+            color: #e30613;
+        }
+
+        .os-number {
+            text-align: right;
+            font-size: 11px;
+            color: #555;
+        }
+
+        .os-number strong {
+            font-size: 14px;
+            color: #111;
+        }
+
+        .section-title {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 6px 10px;
+            margin-top: 18px;
+            margin-bottom: 0;
+        }
+
+        .info-table {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-collapse: collapse;
+        }
+
+        .info-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 11px;
+            width: 33%;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 8px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .text-box {
+            border: 1px solid #ddd;
+            border-top: none;
+            padding: 10px;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0;
+        }
+
+        .items-table th {
+            background-color: #f2f2f2;
+            color: #555;
+            font-size: 9px;
+            text-transform: uppercase;
+            text-align: left;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+        }
+
+        .items-table td {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .total-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .total-table td {
+            padding: 8px 10px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .total-table .total-value {
+            color: #e30613;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 8px;
+            color: #999;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <span class="logo-title">AUTO PEÇAS E <span class="red">MECÂNICA SANTANA</span></span>
+            </td>
+            <td class="os-number">
+                Ordem de Serviço<br>
+                <strong>#{{ ordem.id|stringformat:"05d" }}</strong><br>
+                {{ ordem.criado_em|date:"d/m/Y H:i" }}
+            </td>
+        </tr>
+    </table>
+
+    <p class="section-title">Dados do Cliente</p>
+    <table class="info-table">
+        <tr>
+            <td>
+                <span class="info-label">Nome</span>
+                {{ ordem.cliente.nome }}
+            </td>
+            <td>
+                <span class="info-label">CPF</span>
+                {{ ordem.cliente.cpf }}
+            </td>
+            <td>
+                <span class="info-label">Telefone</span>
+                {{ ordem.cliente.telefone }}
+            </td>
+        </tr>
+    </table>
+
+    <p class="section-title">Dados do Veículo</p>
+    <table class="info-table">
+        <tr>
+            <td>
+                <span class="info-label">Veículo</span>
+                {{ ordem.veiculo.marca }} {{ ordem.veiculo.modelo }}
+            </td>
+            <td>
+                <span class="info-label">Placa</span>
+                {{ ordem.veiculo.placa }}
+            </td>
+            <td>
+                <span class="info-label">Ano</span>
+                {{ ordem.veiculo.ano }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="info-label">KM Atual</span>
+                {{ ordem.km_atual|default:"—" }}
+            </td>
+            <td>
+                <span class="info-label">Previsão de Entrega</span>
+                {{ ordem.previsao_entrega|date:"d/m/Y"|default:"—" }}
+            </td>
+            <td>
+                <span class="info-label">Atendente</span>
+                {{ ordem.atendente|default:"—" }}
+            </td>
+        </tr>
+    </table>
+
+    {% if ordem.defeito_relatado %}
+    <p class="section-title">Defeito Relatado</p>
+    <div class="text-box">{{ ordem.defeito_relatado }}</div>
+    {% endif %}
+
+    <p class="section-title">Serviços</p>
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Serviço</th>
+                <th class="text-right">Qtd</th>
+                <th class="text-right">Preço Unit.</th>
+                <th class="text-right">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ordem.itens.all %}
+            <tr>
+                <td>{{ item.servico.nome }}</td>
+                <td class="text-right">{{ item.quantidade }}</td>
+                <td class="text-right">R$ {{ item.preco_unitario }}</td>
+                <td class="text-right">R$ {{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="total-table">
+        <tr>
+            <td>Total: <span class="total-value">R$ {{ ordem.total }}</span></td>
+        </tr>
+    </table>
+
+    {% if ordem.observacoes %}
+    <p class="section-title">Observações</p>
+    <div class="text-box">{{ ordem.observacoes }}</div>
+    {% endif %}
+
+    <div class="footer">
+        Auto Peças e Mecânica Santana — Documento gerado em {{ ordem.criado_em|date:"d/m/Y" }}
+    </div>
+
+</body>
+
+</html>

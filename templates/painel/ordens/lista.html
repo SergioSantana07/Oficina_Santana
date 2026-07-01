@@ -1,0 +1,115 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_ordens %}active{% endblock %}
+{% block page_title %}Ordens de Serviço{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="text-white mb-0">Ordens de Serviço</h5>
+    <a href="{% url 'ordem_nova' %}" class="btn btn-admin-sm">
+        <i class="bi bi-plus-lg"></i> Nova O.S.
+    </a>
+</div>
+
+<form method="GET" class="mb-4">
+    <div class="input-group admin-search">
+        <input type="text" name="q" class="form-control" placeholder="Pesquisar por cliente..." value="{{ pesquisa }}">
+        <button type="submit" class="btn btn-admin-sm">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
+</form>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<div class="dash-table-box">
+    <table class="table admin-table table-borderless">
+        <thead>
+            <tr>
+                <th>#OS</th>
+                <th>Cliente</th>
+                <th>Veículo</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ordem in ordens %}
+            <tr>
+                <td>#{{ ordem.id|stringformat:"05d" }}</td>
+                <td>{{ ordem.cliente.nome }}</td>
+                <td>{{ ordem.veiculo.marca }} {{ ordem.veiculo.modelo }} — {{ ordem.veiculo.placa }}</td>
+                <td>
+                    <select class="status-select status-{{ ordem.status }}" data-id="{{ ordem.id }}">
+                        <option value="aberta" {% if ordem.status == 'aberta' %}selected{% endif %}>Aberta</option>
+                        <option value="andamento" {% if ordem.status == 'andamento' %}selected{% endif %}>Em andamento
+                        </option>
+                        <option value="aguardando" {% if ordem.status == 'aguardando' %}selected{% endif %}>Aguardando
+                            peças</option>
+                        <option value="finalizada" {% if ordem.status == 'finalizada' %}selected{% endif %}>Finalizada
+                        </option>
+                        <option value="entregue" {% if ordem.status == 'entregue' %}selected{% endif %}>Entregue</option>
+                    </select>
+                </td>
+                <td>R$ {{ ordem.total }}</td>
+                <td>{{ ordem.criado_em|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'ordem_visualizar' ordem.id %}" class="btn btn-admin-sm me-1">
+                        <i class="bi bi-eye-fill"></i>
+                    </a>
+                    <a href="{% url 'ordem_editar' ordem.id %}" class="btn btn-admin-sm me-1">
+                        <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <a href="{% url 'ordem_excluir' ordem.id %}" class="btn btn-danger-sm btn-confirm-delete"
+                        data-texto="Excluir a OS #{{ ordem.id }}?">
+                        <i class="bi bi-trash-fill"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center text-muted">Nenhuma ordem de serviço cadastrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    document.querySelectorAll('.status-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const id = this.dataset.id;
+            const novoStatus = this.value;
+
+            fetch(`/admin-santana/ordens/status/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+                body: `status=${novoStatus}`,
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        this.className = `status-select status-${novoStatus}`;
+                    }
+                });
+        });
+    });
+</script>
+
+{% endblock %}

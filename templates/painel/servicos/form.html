@@ -1,0 +1,55 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_servicos %}active{% endblock %}
+{% block page_title %}{{ acao }} Serviço{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="text-white mb-0">{{ acao }} Serviço</h5>
+    <a href="{% url 'servicos_admin_lista' %}" class="btn btn-admin-sm">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="dash-table-box">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label admin-label">Nome</label>
+                <input type="text" name="nome" class="form-control admin-input"
+                       value="{{ servico.nome|default:'' }}" required>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label admin-label">Preço (R$)</label>
+                <input type="number" step="0.01" name="preco" class="form-control admin-input"
+                       value="{{ servico.preco|default:'' }}" required>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label admin-label">Duração estimada</label>
+                <input type="text" name="duracao_estimada" class="form-control admin-input"
+                       placeholder="Ex: 1h30min" value="{{ servico.duracao_estimada|default:'' }}">
+            </div>
+
+            <div class="col-12">
+                <label class="form-label admin-label">Descrição</label>
+                <textarea name="descricao" class="form-control admin-input" rows="4">{{ servico.descricao|default:'' }}</textarea>
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-admin-login px-4">
+                <i class="bi bi-check-lg"></i> Salvar
+            </button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

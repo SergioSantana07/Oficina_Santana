@@ -1,0 +1,92 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_ordens %}active{% endblock %}
+{% block page_title %}Visualizar O.S. #{{ ordem.id }}{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="text-white mb-0">Ordem de Serviço #{{ ordem.id|stringformat:"05d" }}</h5>
+    <div>
+        <a href="{% url 'ordem_pdf' ordem.id %}" class="btn btn-admin-login me-2">
+            <i class="bi bi-file-earmark-pdf-fill"></i> Gerar PDF
+        </a>
+        <a href="{% url 'ordens_lista' %}" class="btn btn-admin-sm">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
+</div>
+
+<div class="dash-table-box mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <p class="admin-label mb-1">Cliente</p>
+            <p class="text-white">{{ ordem.cliente.nome }}</p>
+        </div>
+        <div class="col-md-4">
+            <p class="admin-label mb-1">Veículo</p>
+            <p class="text-white">{{ ordem.veiculo.marca }} {{ ordem.veiculo.modelo }} — {{ ordem.veiculo.placa }}</p>
+        </div>
+        <div class="col-md-4">
+            <p class="admin-label mb-1">Status</p>
+            <span class="badge-status {{ ordem.status }}">{{ ordem.get_status_display }}</span>
+        </div>
+        <div class="col-md-4">
+            <p class="admin-label mb-1">KM Atual</p>
+            <p class="text-white">{{ ordem.km_atual|default:"—" }}</p>
+        </div>
+        <div class="col-md-4">
+            <p class="admin-label mb-1">Previsão de Entrega</p>
+            <p class="text-white">{{ ordem.previsao_entrega|date:"d/m/Y"|default:"—" }}</p>
+        </div>
+        <div class="col-md-4">
+            <p class="admin-label mb-1">Atendente</p>
+            <p class="text-white">{{ ordem.atendente|default:"—" }}</p>
+        </div>
+        <div class="col-12">
+            <p class="admin-label mb-1">Defeito Relatado</p>
+            <p class="text-white">{{ ordem.defeito_relatado|default:"—" }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="dash-table-box">
+    <h6 class="text-white mb-3">Serviços</h6>
+    <table class="table admin-table table-borderless">
+        <thead>
+            <tr>
+                <th>Serviço</th>
+                <th>Qtd</th>
+                <th>Preço Unit.</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ordem.itens.all %}
+            <tr>
+                <td>{{ item.servico.nome }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R$ {{ item.preco_unitario }}</td>
+                <td>R$ {{ item.subtotal }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center text-muted">Nenhum serviço adicionado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-end mt-3">
+        <h5 class="text-white">Total: <span class="santana-red">R$ {{ ordem.total }}</span></h5>
+    </div>
+
+    {% if ordem.observacoes %}
+    <div class="mt-3">
+        <p class="admin-label mb-1">Observações</p>
+        <p class="text-white">{{ ordem.observacoes }}</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

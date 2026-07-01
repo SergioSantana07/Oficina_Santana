@@ -290,21 +290,14 @@
     color: #888;
 }
 
-.badge-status {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.badge-status.em-andamento {
-    background: rgba(255, 193, 7, 0.15);
-    color: #ffc107;
-}
-
 .badge-status.aberta {
     background: rgba(13, 202, 240, 0.15);
     color: #0dcaf0;
+}
+
+.badge-status.andamento {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
 }
 
 .badge-status.aguardando {
@@ -315,6 +308,11 @@
 .badge-status.finalizada {
     background: rgba(76, 175, 80, 0.15);
     color: #4caf50;
+}
+
+.badge-status.entregue {
+    background: rgba(108, 117, 125, 0.15);
+    color: #aaa;
 }
 
 .btn-admin-sm {
@@ -387,4 +385,108 @@
 .btn-danger-sm:hover {
     background: #ff4444;
     color: white;
+}
+
+.dash-table-box p.admin-label {
+    color: #888 !important;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.status-select {
+    border: none;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.status-select.status-aberta {
+    background: rgba(13, 202, 240, 0.15);
+    color: #0dcaf0;
+}
+
+.status-select.status-andamento {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+.status-select.status-aguardando {
+    background: rgba(255, 0, 0, 0.15);
+    color: #ff4444;
+}
+
+.status-select.status-finalizada {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4caf50;
+}
+
+.status-select.status-entregue {
+    background: rgba(108, 117, 125, 0.15);
+    color: #aaa;
+}
+
+.status-select option {
+    background: #111;
+    color: #fff;
+}
+
+/* ============================================================
+   MODAL DE CONFIRMAÇÃO
+============================================================ */
+
+.confirm-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirm-overlay.show {
+    display: flex;
+}
+
+.confirm-box {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 14px;
+    padding: 35px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 2.5rem;
+    color: #ff0000;
+    margin-bottom: 15px;
+}
+
+.confirm-box h5 {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.confirm-box p {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.confirm-buttons .btn {
+    flex: 1;
 }

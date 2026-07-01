@@ -1,0 +1,229 @@
+{% extends 'painel/base_admin.html' %}
+
+{% block menu_ordens %}active{% endblock %}
+{% block page_title %}{{ acao }} Ordem de Serviço{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="text-white mb-0">{{ acao }} Ordem de Serviço</h5>
+    <a href="{% url 'ordens_lista' %}" class="btn btn-admin-sm">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+
+<div class="dash-table-box">
+    <form method="POST" id="form-ordem">
+        {% csrf_token %}
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label class="form-label admin-label">Cliente</label>
+                <select name="cliente" id="select-cliente" class="form-control admin-input" required>
+                    <option value="">Selecione o cliente</option>
+                    {% for c in clientes %}
+                    <option value="{{ c.id }}" {% if ordem.cliente.id == c.id %}selected{% endif %}>
+                        {{ c.nome }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label admin-label">Veículo</label>
+                <select name="veiculo" id="select-veiculo" class="form-control admin-input" required>
+                    <option value="">Selecione o veículo</option>
+                    {% if ordem %}
+                        {% for v in veiculos_do_cliente %}
+                        <option value="{{ v.id }}" {% if ordem.veiculo.id == v.id %}selected{% endif %}>
+                            {{ v.marca }} {{ v.modelo }} — {{ v.placa }}
+                        </option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label admin-label">KM Atual</label>
+                <input type="number" name="km_atual" class="form-control admin-input"
+                       value="{{ ordem.km_atual|default:'' }}">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label admin-label">Status</label>
+                <select name="status" class="form-control admin-input">
+                    <option value="aberta" {% if ordem.status == 'aberta' %}selected{% endif %}>Aberta</option>
+                    <option value="andamento" {% if ordem.status == 'andamento' %}selected{% endif %}>Em andamento</option>
+                    <option value="aguardando" {% if ordem.status == 'aguardando' %}selected{% endif %}>Aguardando peças</option>
+                    <option value="finalizada" {% if ordem.status == 'finalizada' %}selected{% endif %}>Finalizada</option>
+                    <option value="entregue" {% if ordem.status == 'entregue' %}selected{% endif %}>Entregue</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label admin-label">Previsão de Entrega</label>
+                <input type="date" name="previsao_entrega" class="form-control admin-input"
+                       value="{{ ordem.previsao_entrega|date:'Y-m-d'|default:'' }}">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label admin-label">Atendente</label>
+                <input type="text" name="atendente" class="form-control admin-input"
+                       value="{{ ordem.atendente|default:'' }}">
+            </div>
+
+            <div class="col-12">
+                <label class="form-label admin-label">Defeito Relatado</label>
+                <textarea name="defeito_relatado" class="form-control admin-input" rows="2">{{ ordem.defeito_relatado|default:'' }}</textarea>
+            </div>
+
+        </div>
+
+        <hr class="my-4" style="border-color:#222;">
+
+        <!-- SERVIÇOS -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="text-white mb-0">Serviços</h6>
+            <button type="button" class="btn btn-admin-sm" id="btn-add-servico">
+                <i class="bi bi-plus-lg"></i> Adicionar Serviço
+            </button>
+        </div>
+
+        <div id="itens-servicos">
+            {% if ordem %}
+                {% for item in ordem.itens.all %}
+                <div class="row g-2 mb-2 item-servico align-items-end">
+                    <div class="col-md-5">
+                        <label class="form-label admin-label">Serviço</label>
+                        <select name="servico_id[]" class="form-control admin-input servico-select" required>
+                            <option value="">Selecione</option>
+                            {% for s in servicos_disponiveis %}
+                            <option value="{{ s.id }}" data-preco="{{ s.preco }}"
+                                {% if item.servico.id == s.id %}selected{% endif %}>
+                                {{ s.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label admin-label">Qtd</label>
+                        <input type="number" name="quantidade[]" class="form-control admin-input qtd-input"
+                               value="{{ item.quantidade }}" min="1" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label admin-label">Preço Unit. (R$)</label>
+                        <input type="number" step="0.01" name="preco_unitario[]" class="form-control admin-input preco-input"
+                               value="{{ item.preco_unitario }}" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-danger-sm w-100 btn-remove-item">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label admin-label">Observações</label>
+            <textarea name="observacoes" class="form-control admin-input" rows="2">{{ ordem.observacoes|default:'' }}</textarea>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-admin-login px-4">
+                <i class="bi bi-check-lg"></i> Salvar
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<!-- TEMPLATE OCULTO PARA NOVO ITEM -->
+<template id="template-item-servico">
+    <div class="row g-2 mb-2 item-servico align-items-end">
+        <div class="col-md-5">
+            <label class="form-label admin-label">Serviço</label>
+            <select name="servico_id[]" class="form-control admin-input servico-select" required>
+                <option value="">Selecione</option>
+                {% for s in servicos_disponiveis %}
+                <option value="{{ s.id }}" data-preco="{{ s.preco }}">{{ s.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label admin-label">Qtd</label>
+            <input type="number" name="quantidade[]" class="form-control admin-input qtd-input" value="1" min="1" required>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label admin-label">Preço Unit. (R$)</label>
+            <input type="number" step="0.01" name="preco_unitario[]" class="form-control admin-input preco-input" required>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-danger-sm w-100 btn-remove-item">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        </div>
+    </div>
+</template>
+
+<script>
+const selectCliente = document.getElementById('select-cliente');
+const selectVeiculo = document.getElementById('select-veiculo');
+const itensContainer = document.getElementById('itens-servicos');
+const btnAddServico = document.getElementById('btn-add-servico');
+const templateItem = document.getElementById('template-item-servico');
+
+// Atualiza veículos quando troca o cliente
+selectCliente.addEventListener('change', function () {
+    const clienteId = this.value;
+    selectVeiculo.innerHTML = '<option value="">Carregando...</option>';
+
+    if (!clienteId) {
+        selectVeiculo.innerHTML = '<option value="">Selecione o veículo</option>';
+        return;
+    }
+
+    fetch(`/admin-santana/api/veiculos-cliente/${clienteId}/`)
+        .then(res => res.json())
+        .then(data => {
+            selectVeiculo.innerHTML = '<option value="">Selecione o veículo</option>';
+            data.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v.id;
+                opt.textContent = `${v.marca} ${v.modelo} — ${v.placa}`;
+                selectVeiculo.appendChild(opt);
+            });
+        });
+});
+
+// Preenche preço automaticamente ao escolher um serviço (só quando o usuário troca manualmente)
+itensContainer.addEventListener('change', function (e) {
+    if (e.target.classList.contains('servico-select') && e.isTrusted) {
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        const preco = selectedOption.getAttribute('data-preco');
+        const linha = e.target.closest('.item-servico');
+        const precoInput = linha.querySelector('.preco-input');
+        if (preco) {
+            precoInput.value = preco;
+        }
+    }
+});
+
+// Adiciona novo item de serviço
+btnAddServico.addEventListener('click', function () {
+    const clone = templateItem.content.cloneNode(true);
+    itensContainer.appendChild(clone);
+});
+
+// Remove item de serviço
+itensContainer.addEventListener('click', function (e) {
+    const botao = e.target.closest('.btn-remove-item');
+    if (botao) {
+        botao.closest('.item-servico').remove();
+    }
+});
+</script>
+
+{% endblock %}

@@ -2,7 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Cliente, Veiculo
+from django.views.decorators.http import require_POST
+from .models import Cliente, Veiculo, Servico, OrdemServico, ItemOrdemServico
+from django.template.loader import render_to_string
+from django.http import HttpResponse, JsonResponse
+from xhtml2pdf import pisa
+import io
 
 def home(request):
     return render(request, 'home.html')
@@ -127,3 +132,194 @@ def veiculo_excluir(request, id):
     veiculo.delete()
     messages.success(request, 'Veículo excluído com sucesso!')
     return redirect('veiculos_lista')
+
+
+# ============================================================
+# SERVIÇOS (ADMIN)
+# ============================================================
+
+@login_required(login_url='/admin-santana/login/')
+def servicos_admin_lista(request):
+    pesquisa = request.GET.get('q', '')
+    servicos_admin = Servico.objects.filter(nome__icontains=pesquisa) if pesquisa else Servico.objects.all()
+    return render(request, 'painel/servicos/lista.html', {'servicos_admin': servicos_admin, 'pesquisa': pesquisa})
+
+@login_required(login_url='/admin-santana/login/')
+def servico_novo(request):
+    if request.method == 'POST':
+        nome = request.POST['nome']
+        descricao = request.POST.get('descricao', '')
+        preco = request.POST['preco']
+        duracao_estimada = request.POST.get('duracao_estimada', '')
+        Servico.objects.create(nome=nome, descricao=descricao, preco=preco, duracao_estimada=duracao_estimada)
+        messages.success(request, 'Serviço cadastrado com sucesso!')
+        return redirect('servicos_admin_lista')
+    return render(request, 'painel/servicos/form.html', {'acao': 'Novo'})
+
+@login_required(login_url='/admin-santana/login/')
+def servico_editar(request, id):
+    servico = get_object_or_404(Servico, id=id)
+    if request.method == 'POST':
+        servico.nome = request.POST['nome']
+        servico.descricao = request.POST.get('descricao', '')
+        servico.preco = request.POST['preco']
+        servico.duracao_estimada = request.POST.get('duracao_estimada', '')
+        servico.save()
+        messages.success(request, 'Serviço atualizado com sucesso!')
+        return redirect('servicos_admin_lista')
+    return render(request, 'painel/servicos/form.html', {'acao': 'Editar', 'servico': servico})
+
+@login_required(login_url='/admin-santana/login/')
+def servico_excluir(request, id):
+    servico = get_object_or_404(Servico, id=id)
+    servico.delete()
+    messages.success(request, 'Serviço excluído com sucesso!')
+    return redirect('servicos_admin_lista')
+
+
+# ============================================================
+# ORDEM DE SERVIÇO
+# ============================================================
+
+@login_required(login_url='/admin-santana/login/')
+def ordens_lista(request):
+    pesquisa = request.GET.get('q', '')
+    if pesquisa:
+        ordens = OrdemServico.objects.filter(cliente__nome__icontains=pesquisa)
+    else:
+        ordens = OrdemServico.objects.all()
+    ordens = ordens.order_by('-criado_em')
+    return render(request, 'painel/ordens/lista.html', {'ordens': ordens, 'pesquisa': pesquisa})
+
+
+@login_required(login_url='/admin-santana/login/')
+def ordem_nova(request):
+    clientes = Cliente.objects.all()
+    servicos_disponiveis = Servico.objects.all()
+
+    if request.method == 'POST':
+        cliente = get_object_or_404(Cliente, id=request.POST['cliente'])
+        veiculo = get_object_or_404(Veiculo, id=request.POST['veiculo'])
+
+        ordem = OrdemServico.objects.create(
+            cliente=cliente,
+            veiculo=veiculo,
+            km_atual=request.POST.get('km_atual') or None,
+            defeito_relatado=request.POST.get('defeito_relatado', ''),
+            status=request.POST.get('status', 'aberta'),
+            previsao_entrega=request.POST.get('previsao_entrega') or None,
+            atendente=request.POST.get('atendente', ''),
+            observacoes=request.POST.get('observacoes', ''),
+        )
+
+        servicos_ids = request.POST.getlist('servico_id[]')
+        quantidades = request.POST.getlist('quantidade[]')
+        precos = request.POST.getlist('preco_unitario[]')
+
+        for sid, qtd, preco in zip(servicos_ids, quantidades, precos):
+            if sid:
+                ItemOrdemServico.objects.create(
+                    ordem=ordem,
+                    servico_id=sid,
+                    quantidade=qtd,
+                    preco_unitario=preco,
+                )
+
+        messages.success(request, 'Ordem de Serviço criada com sucesso!')
+        return redirect('ordens_lista')
+
+    return render(request, 'painel/ordens/form.html', {
+        'acao': 'Nova',
+        'clientes': clientes,
+        'servicos_disponiveis': servicos_disponiveis,
+    })
+
+
+@login_required(login_url='/admin-santana/login/')
+def ordem_editar(request, id):
+    ordem = get_object_or_404(OrdemServico, id=id)
+    clientes = Cliente.objects.all()
+    servicos_disponiveis = Servico.objects.all()
+    veiculos_do_cliente = Veiculo.objects.filter(cliente=ordem.cliente)
+
+    if request.method == 'POST':
+        ordem.cliente = get_object_or_404(Cliente, id=request.POST['cliente'])
+        ordem.veiculo = get_object_or_404(Veiculo, id=request.POST['veiculo'])
+        ordem.km_atual = request.POST.get('km_atual') or None
+        ordem.defeito_relatado = request.POST.get('defeito_relatado', '')
+        ordem.status = request.POST.get('status', 'aberta')
+        ordem.previsao_entrega = request.POST.get('previsao_entrega') or None
+        ordem.atendente = request.POST.get('atendente', '')
+        ordem.observacoes = request.POST.get('observacoes', '')
+        ordem.save()
+
+        ordem.itens.all().delete()
+        servicos_ids = request.POST.getlist('servico_id[]')
+        quantidades = request.POST.getlist('quantidade[]')
+        precos = request.POST.getlist('preco_unitario[]')
+
+        for sid, qtd, preco in zip(servicos_ids, quantidades, precos):
+            if sid:
+                ItemOrdemServico.objects.create(
+                    ordem=ordem,
+                    servico_id=sid,
+                    quantidade=qtd,
+                    preco_unitario=preco,
+                )
+
+        messages.success(request, 'Ordem de Serviço atualizada com sucesso!')
+        return redirect('ordens_lista')
+
+    return render(request, 'painel/ordens/form.html', {
+        'acao': 'Editar',
+        'ordem': ordem,
+        'clientes': clientes,
+        'servicos_disponiveis': servicos_disponiveis,
+        'veiculos_do_cliente': veiculos_do_cliente,
+    })
+
+
+@login_required(login_url='/admin-santana/login/')
+def ordem_excluir(request, id):
+    ordem = get_object_or_404(OrdemServico, id=id)
+    ordem.delete()
+    messages.success(request, 'Ordem de Serviço excluída com sucesso!')
+    return redirect('ordens_lista')
+
+
+@login_required(login_url='/admin-santana/login/')
+def ordem_visualizar(request, id):
+    ordem = get_object_or_404(OrdemServico, id=id)
+    return render(request, 'painel/ordens/visualizar.html', {'ordem': ordem})
+
+
+@login_required(login_url='/admin-santana/login/')
+def ordem_pdf(request, id):
+    ordem = get_object_or_404(OrdemServico, id=id)
+    html_string = render_to_string('painel/ordens/pdf.html', {'ordem': ordem})
+
+    resultado = io.BytesIO()
+    pdf = pisa.pisaDocument(io.BytesIO(html_string.encode('UTF-8')), resultado)
+
+    if pdf.err:
+        return HttpResponse('Erro ao gerar PDF', status=500)
+
+    response = HttpResponse(resultado.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="OS_{ordem.id}_{ordem.cliente.nome}.pdf"'
+    return response
+
+@login_required(login_url='/admin-santana/login/')
+def api_veiculos_cliente(request, cliente_id):
+    veiculos = Veiculo.objects.filter(cliente_id=cliente_id).values('id', 'marca', 'modelo', 'placa')
+    return JsonResponse(list(veiculos), safe=False)
+
+@login_required(login_url='/admin-santana/login/')
+@require_POST
+def ordem_atualizar_status(request, id):
+    ordem = get_object_or_404(OrdemServico, id=id)
+    novo_status = request.POST.get('status')
+    if novo_status in dict(OrdemServico.STATUS_CHOICES):
+        ordem.status = novo_status
+        ordem.save()
+        return JsonResponse({'sucesso': True})
+    return JsonResponse({'sucesso': False}, status=400)

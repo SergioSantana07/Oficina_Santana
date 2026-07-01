@@ -1,14 +1,14 @@
 {% extends 'painel/base_admin.html' %}
 
-{% block menu_clientes %}active{% endblock %}
-{% block page_title %}Clientes{% endblock %}
+{% block menu_servicos %}active{% endblock %}
+{% block page_title %}Serviços{% endblock %}
 
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="text-white mb-0">Lista de Clientes</h5>
-    <a href="{% url 'cliente_novo' %}" class="btn btn-admin-sm">
-        <i class="bi bi-plus-lg"></i> Novo Cliente
+    <h5 class="text-white mb-0">Lista de Serviços</h5>
+    <a href="{% url 'servico_novo' %}" class="btn btn-admin-sm">
+        <i class="bi bi-plus-lg"></i> Novo Serviço
     </a>
 </div>
 
@@ -35,35 +35,33 @@
             <tr>
                 <th>#</th>
                 <th>Nome</th>
-                <th>CPF</th>
-                <th>Telefone</th>
-                <th>E-mail</th>
-                <th>Cadastrado em</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Duração</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            {% for cliente in clientes %}
+            {% for servico in servicos_admin %}
             <tr>
-                <td>{{ cliente.id }}</td>
-                <td>{{ cliente.nome }}</td>
-                <td>{{ cliente.cpf }}</td>
-                <td>{{ cliente.telefone }}</td>
-                <td>{{ cliente.email|default:"—" }}</td>
-                <td>{{ cliente.criado_em|date:"d/m/Y" }}</td>
+                <td>{{ servico.id }}</td>
+                <td>{{ servico.nome }}</td>
+                <td>{{ servico.descricao|default:"—"|truncatechars:50 }}</td>
+                <td>R$ {{ servico.preco }}</td>
+                <td>{{ servico.duracao_estimada|default:"—" }}</td>
                 <td>
-                    <a href="{% url 'cliente_editar' cliente.id %}" class="btn btn-admin-sm me-1">
+                    <a href="{% url 'servico_editar' servico.id %}" class="btn btn-admin-sm me-1">
                         <i class="bi bi-pencil-fill"></i>
                     </a>
-                    <a href="{% url 'cliente_excluir' cliente.id %}" class="btn btn-danger-sm btn-confirm-delete"
-                        data-texto="Excluir cliente {{ cliente.nome }}?">
+                    <a href="{% url 'servico_excluir' servico.id %}" class="btn btn-danger-sm btn-confirm-delete"
+                        data-texto="Excluir serviço {{ servico.nome }}?">
                         <i class="bi bi-trash-fill"></i>
                     </a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="7" class="text-center text-muted">Nenhum cliente cadastrado.</td>
+                <td colspan="6" class="text-center text-muted">Nenhum serviço cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>

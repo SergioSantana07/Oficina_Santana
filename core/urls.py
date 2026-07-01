@@ -21,4 +21,19 @@ urlpatterns = [
     path('admin-santana/veiculos/novo/', views.veiculo_novo, name='veiculo_novo'),
     path('admin-santana/veiculos/editar/<int:id>/', views.veiculo_editar, name='veiculo_editar'),
     path('admin-santana/veiculos/excluir/<int:id>/', views.veiculo_excluir, name='veiculo_excluir'),
+    # SERVIÇOS (ADMIN)
+    path('admin-santana/servicos/', views.servicos_admin_lista, name='servicos_admin_lista'),
+    path('admin-santana/servicos/novo/', views.servico_novo, name='servico_novo'),
+    path('admin-santana/servicos/editar/<int:id>/', views.servico_editar, name='servico_editar'),
+    path('admin-santana/servicos/excluir/<int:id>/', views.servico_excluir, name='servico_excluir'),
+    
+    # ORDEM DE SERVIÇO
+    path('admin-santana/ordens/', views.ordens_lista, name='ordens_lista'),
+    path('admin-santana/ordens/novo/', views.ordem_nova, name='ordem_nova'),
+    path('admin-santana/ordens/editar/<int:id>/', views.ordem_editar, name='ordem_editar'),
+    path('admin-santana/ordens/excluir/<int:id>/', views.ordem_excluir, name='ordem_excluir'),
+    path('admin-santana/ordens/visualizar/<int:id>/', views.ordem_visualizar, name='ordem_visualizar'),
+    path('admin-santana/ordens/pdf/<int:id>/', views.ordem_pdf, name='ordem_pdf'),
+    path('admin-santana/ordens/status/<int:id>/', views.ordem_atualizar_status, name='ordem_atualizar_status'),
+    path('admin-santana/api/veiculos-cliente/<int:cliente_id>/', views.api_veiculos_cliente, name='api_veiculos_cliente'),
 ]

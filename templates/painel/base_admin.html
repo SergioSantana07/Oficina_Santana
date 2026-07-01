@@ -11,6 +11,45 @@
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 </head>
 
+<!-- MODAL CONFIRMAÇÃO EXCLUSÃO -->
+<div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+        <i class="bi bi-exclamation-triangle-fill confirm-icon"></i>
+        <h5>Tem certeza?</h5>
+        <p id="confirm-text">Essa ação não poderá ser desfeita.</p>
+        <div class="confirm-buttons">
+            <button class="btn btn-admin-sm" id="confirm-cancel">Cancelar</button>
+            <a href="#" class="btn btn-danger-sm" id="confirm-ok">Excluir</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-confirm-delete');
+        if (btn) {
+            e.preventDefault();
+            const overlay = document.getElementById('confirm-overlay');
+            const texto = document.getElementById('confirm-text');
+            const ok = document.getElementById('confirm-ok');
+
+            texto.textContent = btn.dataset.texto || 'Essa ação não poderá ser desfeita.';
+            ok.href = btn.getAttribute('href');
+            overlay.classList.add('show');
+        }
+    });
+
+    document.getElementById('confirm-cancel').addEventListener('click', function () {
+        document.getElementById('confirm-overlay').classList.remove('show');
+    });
+
+    document.getElementById('confirm-overlay').addEventListener('click', function (e) {
+        if (e.target === this) {
+            this.classList.remove('show');
+        }
+    });
+</script>
+
 <body class="admin-body">
 
     <!-- SIDEBAR -->
